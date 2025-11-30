@@ -1,0 +1,23 @@
+{% extends "app/admin/base.html" %}
+
+{% block content %}
+{% block header %}Category List{% endblock %}
+
+<a href="{% url 'category_create' %}">Add New Category</a>
+
+<ul>
+    {% if categories %}
+        <ul>
+            {% for category in categories %}
+                <li>
+                    <a href="{% url 'category_edit' category.id %}">{{ category.name }}</a>
+                    <!-- Optional: Delete button -->
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No categories found.</p>
+    {% endif %}
+
+</ul>
+{% endblock %}

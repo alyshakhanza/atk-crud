@@ -1,0 +1,19 @@
+<h1>My Orders</h1>
+
+<form method="get">
+    {{ form.as_p }}
+    <button type="submit">Filter</button>
+</form>
+
+<ul>
+    {% for order in orders %}
+        <li>
+            Order ID: {{ order.id }}<br>
+            Status: {{ order.status }}<br>
+            Total: {{ order.total_price }}<br>
+            Date: {{ order.order_date }}<br>
+        </li>
+    {% empty %}
+        <li>No orders found.</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,23 @@
+{% extends "app/admin/base.html" %}
+
+{% block content %}
+{% block header %}Item List{% endblock %}
+
+<a href="{% url 'item_create' %}">Add New Item</a>
+
+<ul>
+    {% if items %}
+        <ul>
+            {% for item in items %}
+                <li>
+                    <a href="{% url 'item_edit' item.id %}">{{ item.name }}</a>
+                    <!-- Optional: Delete button -->
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items found.</p>
+    {% endif %}
+
+</ul>
+{% endblock %}

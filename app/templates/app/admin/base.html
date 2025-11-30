@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel{% endblock %}</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: #1f2937;
+            height: 100vh;
+            color: white;
+            padding: 20px 10px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px;
+            margin: 6px 0;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #374151;
+        }
+
+        /* Main content */
+        .content {
+            flex: 1;
+            padding: 30px;
+            background: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .logout {
+            color: red;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+
+        <a href="{% url 'dashboard' %}" class="{% if request.path == '/admin/' %}active{% endif %}">Dashboard</a>
+
+        <a href="{% url 'brand_list' %}" class="{% if 'brand' in request.path %}active{% endif %}">Brands</a>
+
+        <a href="{% url 'category_list' %}" class="{% if 'category' in request.path %}active{% endif %}">Categories</a>
+
+        <a href="{% url 'item_list' %}" class="{% if 'item' in request.path %}active{% endif %}">Items</a>
+
+        <hr style="border-color: #4b5563;">
+
+        <a href="{% url 'logout' %}" class="logout">Logout</a>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="topbar">
+            <h1>{% block header %}Page Title{% endblock %}</h1>
+        </div>
+
+        {% block content %}
+        <!-- PAGE CONTENT GOES HERE -->
+        {% endblock %}
+    </div>
+
+</body>
+</html>

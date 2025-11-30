@@ -1,0 +1,23 @@
+{% extends "app/admin/base.html" %}
+
+{% block content %}
+{% block header %}Brand List{% endblock %}
+
+<a href="{% url 'brand_create' %}">Add New Brand</a>
+
+<ul>
+    {% if brands %}
+        <ul>
+            {% for brand in brands %}
+                <li>
+                    <a href="{% url 'brand_edit' brand.id %}">{{ brand.name }}</a>
+                    <!-- Optional: Delete button -->
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No brands found.</p>
+    {% endif %}
+
+</ul>
+{% endblock %}

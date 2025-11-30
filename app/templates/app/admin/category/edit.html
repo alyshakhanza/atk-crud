@@ -1,0 +1,17 @@
+{% extends "app/admin/base.html" %}
+
+{% block content %}
+<h1>Edit Category: {{ category.name }}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="name">Category Name</label>
+    <input type="text" name="name" value="{{ category.name }}" required><br>
+
+    <label for="description">Description</label>
+    <textarea name="description" required>{{ category.description }}</textarea><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+{% endblock %}
