@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Reports - Corat Coret</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f5f7;
+            color: #111827;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: #ffffff;
+            padding: 24px 20px;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .sidebar-logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ff6ad5;
+            line-height: 1.1;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-link {
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4b5563;
+        }
+
+        .sidebar-link.active {
+            background: #ff5bb5;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar-link:hover {
+            background: #f3f4f6;
+        }
+
+        /* Main */
+        .main {
+            display: flex;
+            flex-direction: column;
+            padding: 18px 24px;
+            gap: 18px;
+        }
+
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input-global {
+            width: 100%;
+            padding: 10px 40px;
+            border-radius: 999px;
+            border: none;
+            background-color: #f3f4f6;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-icon-global {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #9ca3af;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f3f4f6;
+            padding: 6px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .profile-email {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .btn-export {
+            padding: 8px 18px;
+            border-radius: 999px;
+            border: none;
+            background-color: #ff5bb5;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Tabs */
+        .tabs-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: none;
+            background-color: #ffffff;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(15,23,42,0.08);
+        }
+
+        .tab-btn.active {
+            background-color: #111827;
+            color: #ffffff;
+        }
+
+        .tab-btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main content area */
+        .content-grid {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.06);
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* Line chart (Monthly Sales Trend) */
+        .line-chart {
+            margin-top: 8px;
+            height: 160px;
+            border-radius: 12px;
+            background: linear-gradient(to bottom, #fff, #fef2f7);
+            padding: 18px 20px;
+            position: relative;
+        }
+
+        .line-chart-grid {
+            position: absolute;
+            inset: 18px 20px;
+            border-radius: 12px;
+            border: 1px solid #f3e2eb;
+        }
+
+        .line-path {
+            position: absolute;
+            inset: 28px 30px 30px 30px;
+        }
+
+        .line-path svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-x-labels {
+            position: absolute;
+            left: 30px;
+            right: 30px;
+            bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        /* Bottom cards row */
+        .bottom-cards-row {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: 1.3fr 1.2fr 1fr;
+            gap: 16px;
+        }
+
+        .metric-main {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .metric-sub {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        /* Donut chart (Top Selling Categories) */
+        .donut-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .donut {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: conic-gradient(#ff5bb5 0 60%, #fde68a 60% 100%);
+            position: relative;
+        }
+
+        .donut-inner {
+            position: absolute;
+            inset: 16px;
+            border-radius: 50%;
+            background-color: #ffffff;
+        }
+
+        .donut-legend {
+            font-size: 11px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+        }
+
+        /* Table Recent Sales */
+        .table-card {
+            margin-top: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background-color: #f9fafb;
+        }
+
+        th, td {
+            padding: 9px 10px;
+            text-align: left;
+        }
+
+        th {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-cancelled {
+            background-color: #fecaca;
+            color: #b91c1c;
+        }
+
+        .status-delivery {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background-color: #bbf7d0;
+            color: #166534;
+        }
+
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .bottom-cards-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            CORAT<br>CORET
+        </div>
+
+        <nav>
+            <div class="sidebar-nav">
+                <div class="sidebar-title">Main Menu</div>
+                <div class="sidebar-link" onclick="window.location.href='seller-dashboard.html'">Dashboard</div>
+                <div class="sidebar-link" onclick="window.location.href='seller-orders.html'">Orders</div>
+                <div class="sidebar-link" onclick="window.location.href='seller-products.html'">Products</div>
+                <div class="sidebar-link" onclick="window.location.href='seller-customers.html'">Customers</div>
+                <div class="sidebar-link active">Reports</div>
+                <div class="sidebar-link">Settings</div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Top bar -->
+        <div class="top-bar">
+            <div class="search-wrapper">
+                <span class="search-icon-global">🔍</span>
+                <input class="search-input-global" placeholder="Search orders or products">
+            </div>
+
+            <div class="top-actions">
+                <div class="top-icon">🔔</div>
+                <div class="top-icon">⚙️</div>
+                <div class="profile">
+                    <div class="profile-avatar">K4</div>
+                    <div class="profile-info">
+                        <div class="profile-name">Kelompok 4 Chuyy</div>
+                        <div class="profile-email">seller@coratcoret.com</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="page-header">
+            <h1 class="page-title">Sales Reports</h1>
+            <button class="btn-export">Export</button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-row">
+            <button class="tab-btn active">Today</button>
+            <button class="tab-btn">This Week</button>
+            <button class="tab-btn">This Month</button>
+            <button class="tab-btn">Customer Insight</button>
+            <button class="tab-btn tab-btn-outline">
+                Custom Range
+                📅
+            </button>
+        </div>
+
+        <!-- Charts + metrics -->
+        <section class="content-grid">
+            <!-- Left: line chart + table -->
+            <div>
+                <!-- Monthly Sales Trend -->
+                <div class="card">
+                    <div class="card-title">Monthly Sales Trend</div>
+                    <div class="line-chart">
+                        <div class="line-chart-grid"></div>
+                        <div class="line-path">
+                            <!-- SVG line chart sederhana -->
+                            <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+                                <polyline
+                                    fill="none"
+                                    stroke="#ff5bb5"
+                                    stroke-width="2"
+                                    points="0,32 15,30 30,26 45,22 60,18 75,14 90,10 100,8" />
+                                <circle cx="0" cy="32" r="1.5" fill="#ff5bb5"/>
+                                <circle cx="30" cy="26" r="1.5" fill="#ff5bb5"/>
+                                <circle cx="60" cy="18" r="1.5" fill="#ff5bb5"/>
+                                <circle cx="100" cy="8" r="1.8" fill="#ff5bb5"/>
+                            </svg>
+                        </div>
+                        <div class="chart-x-labels">
+                            <span>Jan</span>
+                            <span>Feb</span>
+                            <span>Mar</span>
+                            <span>Apr</span>
+                            <span>May</span>
+                            <span>Jun</span>
+                            <span>Jul</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Sales Transactions -->
+                <div class="card table-card">
+                    <div class="card-title">Recent Sales Transactions</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Customer Name</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ID001</td>
+                                <td>12-12-2025</td>
+                                <td>Melly A</td>
+                                <td>3 items</td>
+                                <td>Rp 120.000</td>
+                                <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                            </tr>
+                            <tr>
+                                <td>ID002</td>
+                                <td>12-12-2025</td>
+                                <td>Yuniar</td>
+                                <td>1 items</td>
+                                <td>Rp 36.000</td>
+                                <td><span class="status-badge status-delivery">Delivery</span></td>
+                            </tr>
+                            <tr>
+                                <td>ID003</td>
+                                <td>13-12-2025</td>
+                                <td>Alysha</td>
+                                <td>2 items</td>
+                                <td>Rp 75.000</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right: donut + revenue + total orders -->
+            <div>
+                <!-- Top Selling Categories -->
+                <div class="card">
+                    <div class="card-title">Top Selling Categories</div>
+                    <div class="donut-wrapper">
+                        <div class="donut">
+                            <div class="donut-inner"></div>
+                        </div>
+                        <div class="donut-legend">
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background-color:#ff5bb5;"></span>
+                                <span>Art Supplies (60%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background-color:#fde68a;"></span>
+                                <span>Craft Tools (40%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue + total orders -->
+                <div class="bottom-cards-row">
+                    <div class="card">
+                        <div class="card-title">Total Revenue</div>
+                        <div class="metric-main">Rp1.230.000</div>
+                        <div class="metric-sub">Average Order Value</div>
+                        <div class="metric-sub" style="font-weight:700; margin-top:2px;">Rp41.500</div>
+                    </div>
+
+                    <div class="card" style="display:flex; flex-direction:column; align-items:flex-start; justify-content:center;">
+                        <div class="card-title">Total Orders</div>
+                        <div class="metric-main" style="font-size:32px;">32</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

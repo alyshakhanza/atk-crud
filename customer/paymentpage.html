@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Corat Coret</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #333;
+            color: white;
+            padding: 8px 40px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .top-bar a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-bottom: 3px solid #e0e0e0;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .logo .corat {
+            color: #d8a7d8;
+        }
+
+        .logo .coret {
+            color: #87ceeb;
+        }
+
+        .page-title {
+            font-size: 32px;
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-box {
+            padding: 8px 35px 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 250px;
+            background-color: #f0f0f0;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff69b4;
+            cursor: pointer;
+        }
+
+        .btn-profile {
+            padding: 8px 25px;
+            background-color: #ffb3d9;
+            border: none;
+            color: #333;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .shipping-address {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 16px;
+            color: #ff69b4;
+        }
+
+        /* User Info */
+        .user-info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .user-address {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Product Section */
+        .product-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .section-header div {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .product-name {
+            flex: 1;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .product-price {
+            width: 150px;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .product-quantity {
+            width: 100px;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .product-subtotal {
+            width: 150px;
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Voucher Section */
+        .voucher-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .voucher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .voucher-title {
+            font-size: 16px;
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        .voucher-link {
+            font-size: 14px;
+            color: #ff69b4;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .voucher-input {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .voucher-label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .voucher-code {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .voucher-amount {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .voucher-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Payment Method */
+        .payment-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .payment-option {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            background-color: white;
+            transition: all 0.3s;
+        }
+
+        .payment-option.active {
+            border-color: #ff69b4;
+            background-color: #fff0f7;
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        /* Total Section */
+        .total-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .total-row.final {
+            font-size: 18px;
+            font-weight: bold;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
+            margin-top: 15px;
+        }
+
+        /* Order Button */
+        .order-button {
+            text-align: right;
+        }
+
+        .btn-order {
+            padding: 15px 60px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-order:hover {
+            background-color: #ff4da6;
+        }
+
+        @media (max-width: 768px) {
+            .product-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .payment-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <a href="#">👤 YourMail</a>
+        <a href="#">📍 Bantuan</a>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav>
+        <div class="nav-left">
+            <div class="logo">
+                <span class="corat">CORAT</span><br>
+                <span class="coret">CORET</span>
+            </div>
+            <div class="page-title">Checkout</div>
+        </div>
+
+        <div class="nav-actions">
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search">
+                <span class="search-icon">🔍</span>
+            </div>
+            <button class="btn-profile">👤 Profile</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Shipping Address -->
+        <div class="shipping-address">
+            📍 <strong>Alamat Pengiriman</strong>
+        </div>
+
+        <!-- User Info -->
+        <div class="user-info">
+            <div>
+                <div class="user-name">Moly A (+62 123456789)</div>
+                <div class="user-address">Jl. Guneng Anyar, Surabaya, Jawa Timur</div>
+            </div>
+        </div>
+
+        <!-- Product Section -->
+        <div class="product-section">
+            <div class="section-header">
+                <div>Produk Dipasan</div>
+                <div>Harga Satuan</div>
+                <div>Jumlah</div>
+                <div>Subtotal Produk</div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-image">💍</div>
+                <div class="product-name">Ring Hasduk</div>
+                <div class="product-price">Rp. 8.500</div>
+                <div class="product-quantity">3</div>
+                <div class="product-subtotal">Rp. 25.500</div>
+            </div>
+        </div>
+
+        <!-- Voucher Section -->
+        <div class="voucher-section">
+            <div class="voucher-header">
+                <div class="voucher-title">🎫 Voucher Toko</div>
+                <a href="#" class="voucher-link">Gunti Voucher</a>
+            </div>
+            <div class="voucher-input">
+                <span class="voucher-label">Pesan:</span>
+                <input type="text" class="voucher-code" placeholder="(Optional)" value="(Optional)">
+                <div class="voucher-amount">
+                    <div class="voucher-label">Opsi Pengiriman: Hemat Cargo</div>
+                </div>
+                <div>
+                    <div class="voucher-label">Ubah</div>
+                    <div class="voucher-value">Rp. 5.000</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Summary -->
+        <div class="total-section">
+            <div class="total-row">
+                <span>Total (1 Produk):</span>
+                <span>Rp. 30.500</span>
+            </div>
+            <div class="total-row final">
+                <span>Total Pembayaran:</span>
+                <span>Rp. 30.500</span>
+            </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="payment-section">
+            <div class="payment-title">Metode Pembayaran:</div>
+            <div class="payment-options">
+                <button class="payment-option active" onclick="selectPayment('cod')">Cod</button>
+                <button class="payment-option" onclick="selectPayment('qris')">Qris</button>
+                <button class="payment-option" onclick="selectPayment('transfer')">Transfer Bank</button>
+            </div>
+        </div>
+
+        <!-- Order Button -->
+        <div class="order-button">
+            <button class="btn-order" onclick="placeOrder()">Buat Pesanan</button>
+        </div>
+    </div>
+
+    <script>
+        // Load checkout data from localStorage
+        function loadCheckout() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            // Display checkout data
+            console.log('Checkout items:', cart);
+        }
+
+        // Select payment method
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            console.log('Payment method selected:', method);
+        }
+
+        // Place order
+        function placeOrder() {
+            const paymentMethod = document.querySelector('.payment-option.active').textContent;
+            
+            if (confirm(`Konfirmasi pesanan dengan metode pembayaran: ${paymentMethod}?`)) {
+                alert('Pesanan berhasil dibuat!');
+                
+                // Clear cart
+                localStorage.removeItem('cart');
+                
+                // Redirect to order success page or homepage
+                // window.location.href = 'order-success.html';
+                window.location.href = 'homepage.html';
+            }
+        }
+
+        // Profile button
+        document.querySelector('.btn-profile').addEventListener('click', function() {
+            const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+            const confirmLogout = confirm(`Logged in as: ${userEmail}\n\nDo you want to logout?`);
+            
+            if (confirmLogout) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('cart');
+                alert('You have been logged out successfully');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Initialize
+        loadCheckout();
+    </script>
+</body>
+</html>

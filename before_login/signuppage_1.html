@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page - Corat Coret</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #ffc0e3, #ffb3d9);
+            min-height: 100vh;
+        }
+
+        /* Header Banner */
+        .header-banner {
+            background-color: #ff69b4;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo .corat {
+            color: #d8a7d8;
+        }
+
+        .logo .coret {
+            color: #87ceeb;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .search-box {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 200px;
+        }
+
+        .btn-login {
+            padding: 8px 25px;
+            background-color: white;
+            border: 1px solid #ff69b4;
+            color: #ff69b4;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-signup {
+            padding: 8px 25px;
+            background-color: #ff69b4;
+            border: none;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Secondary Navigation */
+        .secondary-nav {
+            background-color: white;
+            padding: 12px 40px;
+            display: flex;
+            gap: 25px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .secondary-nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 13px;
+        }
+
+        /* Signup Container */
+        .signup-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 200px);
+            padding: 40px 20px;
+        }
+
+        .signup-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .signup-box h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #f5f5f5;
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .btn-submit:hover {
+            background-color: #ff4da6;
+        }
+
+        .btn-submit:disabled {
+            background-color: #ffb3d9;
+            cursor: not-allowed;
+        }
+
+        .login-link {
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .login-link a {
+            color: #ff69b4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .password-strength {
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background-color: #ff4444;
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background-color: #ffa500;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background-color: #4caf50;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .secondary-nav {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Banner -->
+    <div class="header-banner">
+        ~accessories~
+    </div>
+
+    <!-- Main Navigation -->
+    <nav>
+        <div class="logo">
+            <span class="corat">CORAT</span><br>
+            <span class="coret">CORET</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Product</a></li>
+            <li><a href="#">Cart</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <input type="text" class="search-box" placeholder="Search">
+            <button class="btn-login" onclick="window.location.href='login.html'">Log In</button>
+            <button class="btn-signup">Sign Up</button>
+        </div>
+    </nav>
+
+    <!-- Secondary Navigation -->
+    <div class="secondary-nav">
+        <a href="#">Aksesorie Seragam</a>
+        <a href="#">Alat Gambar</a>
+        <a href="#">Alat Tulis</a>
+        <a href="#">Bahan Perekat</a>
+        <a href="#">Dokumen</a>
+        <a href="#">Mainan</a>
+        <a href="#">Tali</a>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="signup-container">
+        <div class="signup-box">
+            <h2>Signup Page</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <span class="error-message" id="emailError">Please enter a valid email</span>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Create a password" required>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                    <span class="error-message" id="passwordError">Password must be at least 8 characters</span>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                    <span class="error-message" id="confirmError">Passwords do not match</span>
+                </div>
+                
+                <button type="submit" class="btn-submit">Signup</button>
+                
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const strengthBar = document.getElementById('strengthBar');
+
+        // Email validation
+        function validateEmail(email) {
+            const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return pattern.test(email);
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+            return strength;
+        }
+
+        // Update password strength indicator
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = checkPasswordStrength(password);
+
+            strengthBar.className = 'password-strength-bar';
+            
+            if (password.length === 0) {
+                strengthBar.classList.remove('weak', 'medium', 'strong');
+            } else if (strength <= 2) {
+                strengthBar.classList.add('weak');
+            } else if (strength === 3) {
+                strengthBar.classList.add('medium');
+            } else {
+                strengthBar.classList.add('strong');
+            }
+        });
+
+        // Real-time validation
+        emailInput.addEventListener('blur', function() {
+            const emailError = document.getElementById('emailError');
+            if (!validateEmail(this.value)) {
+                emailError.style.display = 'block';
+                this.style.borderColor = '#ff4444';
+            } else {
+                emailError.style.display = 'none';
+                this.style.borderColor = '#ddd';
+            }
+        });
+
+        passwordInput.addEventListener('blur', function() {
+            const passwordError = document.getElementById('passwordError');
+            if (this.value.length < 8) {
+                passwordError.style.display = 'block';
+                this.style.borderColor = '#ff4444';
+            } else {
+                passwordError.style.display = 'none';
+                this.style.borderColor = '#ddd';
+            }
+        });
+
+        confirmPasswordInput.addEventListener('blur', function() {
+            const confirmError = document.getElementById('confirmError');
+            if (this.value !== passwordInput.value) {
+                confirmError.style.display = 'block';
+                this.style.borderColor = '#ff4444';
+            } else {
+                confirmError.style.display = 'none';
+                this.style.borderColor = '#ddd';
+            }
+        });
+
+        // Handle form submission
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            // Validation
+            if (!validateEmail(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                emailInput.style.borderColor = '#ff4444';
+                return;
+            }
+
+            if (password.length < 8) {
+                document.getElementById('passwordError').style.display = 'block';
+                passwordInput.style.borderColor = '#ff4444';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirmError').style.display = 'block';
+                confirmPasswordInput.style.borderColor = '#ff4444';
+                return;
+            }
+
+            // Send to backend
+            console.log('Signup attempt:', { email, password });
+            
+            // Example: Send to backend API
+            fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Registration successful! Please login.');
+                    window.location.href = 'login.html';
+                } else {
+                    alert('Registration failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during registration');
+            });
+        });
+    </script>
+</body>
+</html>

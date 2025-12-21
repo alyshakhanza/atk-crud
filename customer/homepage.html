@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage - Corat Coret</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #ffb3d9;
+            padding: 8px 40px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .top-bar a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .top-bar a:before {
+            content: '📍';
+        }
+
+        .top-bar a:last-child:before {
+            content: '💬';
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #ffb3d9;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #333;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .logo .corat {
+            color: #d8a7d8;
+        }
+
+        .logo .coret {
+            color: #87ceeb;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .cart-icon {
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-box {
+            padding: 8px 35px 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 250px;
+            background-color: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff69b4;
+            cursor: pointer;
+        }
+
+        .btn-profile {
+            padding: 8px 25px;
+            background-color: white;
+            border: 2px solid #ff69b4;
+            color: #ff69b4;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-profile:before {
+            content: '👤';
+        }
+
+        /* Main Content */
+        .main-content {
+            background: linear-gradient(to bottom, #ffcce6, #ffe6f2);
+            min-height: calc(100vh - 150px);
+            padding: 40px;
+        }
+
+        /* Banner Section */
+        .banner {
+            background: linear-gradient(135deg, #ff85b3 0%, #ff66a3 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .banner h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .banner p {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .discount-badge {
+            background-color: #c41e3a;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            display: inline-block;
+            font-size: 18px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .discount-badge:before {
+            content: '🎁';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 30px;
+        }
+
+        .discount-text {
+            font-size: 36px;
+            display: block;
+        }
+
+        .product-preview {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .product-preview-item {
+            background-color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Category Section */
+        .category-section {
+            margin-top: 40px;
+        }
+
+        .category-section h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+        }
+
+        .category-item {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .category-name {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .product-preview {
+                position: static;
+                transform: none;
+                margin-top: 20px;
+                justify-content: center;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <a href="#">Nusihan</a>
+        <a href="#">Diskusi</a>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav>
+        <div class="logo">
+            <span class="corat">CORAT</span><br>
+            <span class="coret">CORET</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Product</a></li>
+            <li><a href="#">Order</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="cart-icon">🛒</div>
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search">
+                <span class="search-icon">🔍</span>
+            </div>
+            <button class="btn-profile" onclick="showProfileMenu()">Profile</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Banner Section -->
+        <div class="banner">
+            <div class="banner-content">
+                <h1>CORAT CORET Dunia Kreasi</h1>
+                <p>Tempat Belanja Produk No. 1 Kreatifmu</p>
+                <div class="discount-badge">
+                    <span>EKSTRA DISKON</span>
+                    <span class="discount-text">15%</span>
+                </div>
+            </div>
+            <div class="product-preview">
+                <div class="product-preview-item">📚</div>
+                <div class="product-preview-item">✏️</div>
+                <div class="product-preview-item">📓</div>
+            </div>
+        </div>
+
+        <!-- Category Section -->
+        <div class="category-section">
+            <h2>Kategori Produk</h2>
+            <div class="category-grid">
+                <div class="category-item" onclick="navigateToCategory('aksesori-seragam')">
+                    <div class="category-icon">🎒</div>
+                    <div class="category-name">Aksesorie Seragam</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('alat-gambar')">
+                    <div class="category-icon">🎨</div>
+                    <div class="category-name">Alat Gambar</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('alat-tulis')">
+                    <div class="category-icon">✏️</div>
+                    <div class="category-name">Alat Tulis</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('bahan-perekat')">
+                    <div class="category-icon">🧴</div>
+                    <div class="category-name">Bahan Perekat</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('dokumen')">
+                    <div class="category-icon">📄</div>
+                    <div class="category-name">Dokumen</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('mainan')">
+                    <div class="category-icon">🧸</div>
+                    <div class="category-name">Mainan</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('tali')">
+                    <div class="category-icon">🧵</div>
+                    <div class="category-name">Tali</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        function checkLogin() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+            } else {
+                console.log('Welcome,', userEmail);
+            }
+        }
+
+        // Profile menu
+        function showProfileMenu() {
+            const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+            const confirmLogout = confirm(`Logged in as: ${userEmail}\n\nDo you want to logout?`);
+            
+            if (confirmLogout) {
+                logout();
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            alert('You have been logged out successfully');
+            window.location.href = 'login.html';
+        }
+
+        // Navigate to category
+        function navigateToCategory(category) {
+            console.log('Navigating to category:', category);
+            // window.location.href = `products.html?category=${category}`;
+            alert(`Navigating to ${category} category`);
+        }
+
+        // Search functionality
+        document.querySelector('.search-box').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchQuery = this.value;
+                console.log('Searching for:', searchQuery);
+                alert(`Searching for: ${searchQuery}`);
+                // window.location.href = `search.html?q=${searchQuery}`;
+            }
+        });
+
+        document.querySelector('.search-icon').addEventListener('click', function() {
+            const searchQuery = document.querySelector('.search-box').value;
+            console.log('Searching for:', searchQuery);
+            alert(`Searching for: ${searchQuery}`);
+        });
+
+        // Cart functionality
+        document.querySelector('.cart-icon').addEventListener('click', function() {
+            console.log('Opening cart');
+            // window.location.href = 'cart.html';
+            alert('Opening shopping cart');
+        });
+
+        // Run on page load
+        window.onload = function() {
+            checkLogin();
+        };
+    </script>
+</body>
+</html>

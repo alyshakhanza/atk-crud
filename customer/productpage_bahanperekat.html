@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page - Bahan Perekat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #333;
+            color: white;
+            padding: 8px 40px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .top-bar a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .logo .corat {
+            color: #d8a7d8;
+        }
+
+        .logo .coret {
+            color: #87ceeb;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .cart-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-box {
+            padding: 8px 35px 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 250px;
+            background-color: #f0f0f0;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff69b4;
+            cursor: pointer;
+        }
+
+        .btn-profile {
+            padding: 8px 25px;
+            background-color: #ffb3d9;
+            border: none;
+            color: #333;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            background-color: white;
+            padding: 15px 40px;
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .category-nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            white-space: nowrap;
+            padding: 5px 10px;
+            transition: all 0.3s;
+        }
+
+        .category-nav a:hover,
+        .category-nav a.active {
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            background-color: white;
+            min-height: calc(100vh - 200px);
+            padding: 40px;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+        }
+
+        .product-card {
+            background-color: white;
+            border: 3px solid #d8a7d8;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-placeholder {
+            font-size: 100px;
+        }
+
+        .product-info {
+            padding: 15px;
+            background: linear-gradient(to bottom, #d8a7d8, #c896d8);
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .product-action {
+            background-color: #90ee90;
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .product-action:hover {
+            background-color: #7dd87d;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .category-nav {
+                padding: 15px 20px;
+                gap: 15px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <a href="#">👤 YourMail</a>
+        <a href="#">📍 Bantuan</a>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav>
+        <div class="logo">
+            <span class="corat">CORAT</span><br>
+            <span class="coret">CORET</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="product.html">Product</a></li>
+            <li><a href="#">Order</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="cart-icon">🛒</div>
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search">
+                <span class="search-icon">🔍</span>
+            </div>
+            <button class="btn-profile">👤 Profile</button>
+        </div>
+    </nav>
+
+    <!-- Category Navigation -->
+    <div class="category-nav">
+        <a href="product-aksesoris.html">Aksesoris Seragam</a>
+        <a href="product-alat-gambar.html">Alat Gambar</a>
+        <a href="product-alat-tulis.html">Alat Tulis</a>
+        <a href="product-bahan-perekat.html" class="active">Bahan Perekat</a>
+        <a href="product-dokumen.html">Dokumen</a>
+        <a href="product-mainan.html">Mainan</a>
+        <a href="#">Tali</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Product Grid -->
+        <div class="product-grid">
+            <!-- Product 1: Lem -->
+            <div class="product-card" onclick="viewProduct(1)">
+                <div class="product-image">
+                    <div class="product-placeholder">🧴</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Lem</div>
+                    <div class="product-price">Rp. 10.000</div>
+                    <button class="product-action">✅ Tambahkan ke Keranjang</button>
+                </div>
+            </div>
+
+            <!-- Product 2: Isi Lem Tembak -->
+            <div class="product-card" onclick="viewProduct(2)">
+                <div class="product-image">
+                    <div class="product-placeholder">📏</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Isi Lem Tembak</div>
+                    <div class="product-price">Rp. 1.000</div>
+                    <button class="product-action">✅ Tambahkan ke Keranjang</button>
+                </div>
+            </div>
+
+            <!-- Product 3: Lem Sterofoam -->
+            <div class="product-card" onclick="viewProduct(3)">
+                <div class="product-image">
+                    <div class="product-placeholder">🧴</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Lem Sterofoam</div>
+                    <div class="product-price">Rp. 18.000</div>
+                    <button class="product-action">✅ Tambahkan ke Keranjang</button>
+                </div>
+            </div>
+
+            <!-- Product 4: Lakban -->
+            <div class="product-card" onclick="viewProduct(4)">
+                <div class="product-image">
+                    <div class="product-placeholder">📦</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Lakban</div>
+                    <div class="product-price">Rp. 8.000</div>
+                    <button class="product-action">✅ Tambahkan ke Keranjang</button>
+                </div>
+            </div>
+
+            <!-- Product 5: Pita Perekat -->
+            <div class="product-card" onclick="viewProduct(5)">
+                <div class="product-image">
+                    <div class="product-placeholder">📼</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Pita Perekat</div>
+                    <div class="product-price">Rp. 20.000</div>
+                    <button class="product-action">✅ Tambahkan ke Keranjang</button>
+                </div>
+            </div>
+
+            <!-- Product 6: Double Tape -->
+            <div class="product-card" onclick="viewProduct(6)">
+                <div class="product-image">
+                    <div class="product-placeholder">⚪</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Double Tape</div>
+                    <div class="product-price">Rp. 14.500</div>
+                    <button class="product-action">✅ Tambahkan ke Keranjang</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // View product detail
+        function viewProduct(productId) {
+            console.log('Viewing product:', productId);
+            alert(`Opening product detail page for product ${productId}`);
+            // window.location.href = `product-detail.html?id=${productId}`;
+        }
+
+        // Add to cart functionality
+        document.querySelectorAll('.product-action').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const productName = this.parentElement.querySelector('.product-name').textContent;
+                const productPrice = this.parentElement.querySelector('.product-price').textContent;
+                
+                addToCart(productName, productPrice);
+            });
+        });
+
+        function addToCart(name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            cart.push({
+                name: name,
+                price: price,
+                quantity: 1,
+                addedAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`✅ ${name} telah ditambahkan ke keranjang!`);
+            
+            console.log('Current cart:', cart);
+        }
+
+        // Category navigation
+        document.querySelectorAll('.category-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (!this.href.includes('.html')) {
+                    e.preventDefault();
+                    
+                    document.querySelectorAll('.category-nav a').forEach(l => {
+                        l.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    
+                    const categoryName = this.textContent;
+                    console.log('Category changed to:', categoryName);
+                    alert(`Loading products for category: ${categoryName}`);
+                }
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-box').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchQuery = this.value;
+                console.log('Searching for:', searchQuery);
+                alert(`Searching for: ${searchQuery}`);
+            }
+        });
+
+        document.querySelector('.search-icon').addEventListener('click', function() {
+            const searchQuery = document.querySelector('.search-box').value;
+            console.log('Searching for:', searchQuery);
+            alert(`Searching for: ${searchQuery}`);
+        });
+
+        // Cart functionality
+        document.querySelector('.cart-icon').addEventListener('click', function() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            console.log('Opening cart. Items:', cart.length);
+            
+            if (cart.length === 0) {
+                alert('Keranjang belanja Anda kosong');
+            } else {
+                alert(`Anda memiliki ${cart.length} item di keranjang`);
+                // window.location.href = 'cart.html';
+            }
+        });
+
+        // Profile button
+        document.querySelector('.btn-profile').addEventListener('click', function() {
+            const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+            const confirmLogout = confirm(`Logged in as: ${userEmail}\n\nDo you want to logout?`);
+            
+            if (confirmLogout) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('cart');
+                alert('You have been logged out successfully');
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
