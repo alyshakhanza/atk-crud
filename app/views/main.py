@@ -67,11 +67,11 @@ def signup(request):
 
     return render(request, "app/public/signup.html")
 
-def product_list(request):
-    return render(request, "app/base/product.html")
+# def product_list(request):
+#     return render(request, "app/base/product.html")
 
 def forbidden(request):
-    return render(request, "app/base/403.html")
+    return render(request, "app/public/403.html")
 
 def notfound(request):
-    return render(request, "app/base/404.html")
+    return render(request, "app/public/404.html")
