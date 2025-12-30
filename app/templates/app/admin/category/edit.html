@@ -1,17 +1,50 @@
-{% extends "app/admin/base.html" %}
+{% extends 'app/admin/base.html' %}
 
 {% block content %}
-<h1>Edit Category: {{ category.name }}</h1>
+<div style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+        <a href="{% url 'category_list' %}" style="text-decoration: none; color: #6b7280; font-size: 24px;">
+            ⬅️
+        </a>
+        <div>
+            <h2 style="color: #333; font-size: 24px; font-weight: 700; margin: 0;">Edit Category</h2>
+            <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Update information for: <b>{{ category.name }}</b></p>
+        </div>
+    </div>
 
-<form method="POST">
-    {% csrf_token %}
-    <label for="name">Category Name</label>
-    <input type="text" name="name" value="{{ category.name }}" required><br>
+    <form method="POST" enctype="multipart/form-data" style="display: grid; grid-template-columns: 300px 1fr; gap: 30px;">
+        {% csrf_token %}
 
-    <label for="description">Description</label>
-    <textarea name="description" required>{{ category.description }}</textarea><br>
+        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                
+                <div style="grid-column: span 2;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Category Name</label>
+                    <input type="text" name="name" value="{{ category.name }}" required
+                        style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none; transition: border 0.2s;"
+                        onfocus="this.style.borderColor='#4f46e5'" onblur="this.style.borderColor='#d1d5db'">
+                </div>
 
-    <button type="submit">Save Changes</button>
-</form>
+                <div style="grid-column: span 2;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Description</label>
+                    <textarea name="description" rows="10"
+                        style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none; font-family: inherit;">{{ category.description|default:'' }}</textarea>
+                </div>
 
+            </div>
+
+            <div style="margin-top: 30px; display: flex; justify-content: flex-end; gap: 15px;">
+                <a href="{% url 'category_list' %}" style="padding: 12px 25px; border-radius: 8px; background: white; border: 1px solid #d1d5db; color: #374151; font-weight: 600; text-decoration: none;">
+                    Cancel
+                </a>
+                <button type="submit" style="padding: 12px 25px; border-radius: 8px; background: #4f46e5; border: none; color: white; font-weight: 600; cursor: pointer; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</script>
 {% endblock %}

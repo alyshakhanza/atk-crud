@@ -1,0 +1,165 @@
+/* --- Variables --- */
+:root {
+    --bg-body: #f4f5f7;
+    --bg-white: #ffffff;
+    --text-main: #333;
+    --text-muted: #9ca3af;
+    --text-link: #4b5563;
+    --primary-pink: #ff5bb5;
+    --logo-pink: #ff6ad5;
+    --border-color: #e5e7eb;
+    --sidebar-width: 260px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    display: flex; /* Layout menggunakan Flexbox untuk body */
+    min-height: 100vh;
+}
+
+a { text-decoration: none; }
+
+/* --- Sidebar Styling (Sesuai Request) --- */
+.sidebar {
+    background-color: var(--bg-white);
+    width: var(--sidebar-width);
+    padding: 24px 20px;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: fixed; /* Supaya sidebar diam saat scroll */
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--logo-pink);
+    line-height: 1.2;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.sidebar-link {
+    padding: 10px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Sedikit dilonggarkan untuk icon */
+    color: var(--text-link);
+    transition: background 0.2s;
+}
+
+.sidebar-link:hover {
+    background: #f3f4f6;
+}
+
+.sidebar-link.active {
+    background: var(--primary-pink);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* --- Main Content Area --- */
+.main {
+    margin-left: var(--sidebar-width); /* Memberi ruang untuk sidebar fixed */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 24px;
+    gap: 8px;
+    width: calc(100% - var(--sidebar-width));
+}
+
+/* Top Bar, Cards, Table styles (bisa dilanjutkan dari kode sebelumnya) */
+/* TOP BAR */
+.top-bar { display: flex; align-items: center; gap: 18px;}
+.admin-user-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Notification */
+.admin-notification {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* User pill */
+.admin-user-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f3f4f6;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+/* Avatar */
+.admin-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #ec4899);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* User info */
+.admin-user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.admin-user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.admin-user-email {
+    font-size: 11px;
+    color: #6b7280;
+}

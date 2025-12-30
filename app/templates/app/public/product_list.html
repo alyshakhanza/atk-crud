@@ -1,0 +1,151 @@
+{% extends 'app/public/base.html' %}
+{% load static %}
+
+{% block title %}Browse Products{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 40px 20px; display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start;">
+
+    <aside style="flex: 0 0 280px; position: sticky; top: 20px; height: fit-content; z-index: 10;">
+        <div style="background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f3f4f6;">
+            
+            <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #f3f4f6;">
+                <h3 style="font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 10px;">Filters</h3>
+                <a href="{% url 'product_list' %}" style="font-size: 13px; color: #ec4899; text-decoration: none; font-weight: 600;">
+                    ↺ Reset All Filters
+                </a>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h4 style="font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Categories</h4>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    {% for cat in categories %}
+                    <a href="?category={{ cat.id }}{% if active_brand %}&brand={{ active_brand }}{% endif %}" 
+                    style="text-decoration: none; font-size: 14px; padding: 8px 12px; border-radius: 8px; transition: 0.2s; display: flex; justify-content: space-between; 
+                    {% if active_category == cat.id %}background: #fce7f3; color: #ec4899; font-weight: 700;{% else %}color: #6b7280; background: transparent;{% endif %}">
+                        <span>{{ cat.name }}</span>
+                        <span style="font-size: 12px; opacity: 0.7;">›</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div>
+                <h4 style="font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Brands</h4>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    {% for brand in brands %}
+                    <a href="?brand={{ brand.id }}{% if active_category %}&category={{ active_category }}{% endif %}" 
+                    style="text-decoration: none; font-size: 14px; padding: 8px 12px; border-radius: 8px; transition: 0.2s; display: flex; justify-content: space-between;
+                    {% if active_brand == brand.id %}background: #dbeafe; color: #2563eb; font-weight: 700;{% else %}color: #6b7280; background: transparent;{% endif %}">
+                        <span>{{ brand.name }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </aside>
+
+    <main style="flex: 1; min-width: 0;"> <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h2 style="font-size: 24px; font-weight: 700; color: #1f2937; margin: 0;">
+                    {% if active_category %}
+                        Category: Result
+                    {% elif search_query %}
+                        Search: "{{ search_query }}"
+                    {% else %}
+                        All Products
+                    {% endif %}
+                </h2>
+                <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Showing {{ items|length }} results</p>
+            </div>
+
+            <form action="." method="GET" style="position: relative; width: 300px;">
+                {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
+                {% if active_brand %}<input type="hidden" name="brand" value="{{ active_brand }}">{% endif %}
+                
+                <input type="text" name="q" placeholder="Search products..." value="{{ search_query|default:'' }}"
+                style="width: 100%; padding: 12px 20px 12px 45px; border-radius: 99px; border: 1px solid #e5e7eb; background: white; outline: none; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: 0.2s;">
+                
+                <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #9ca3af;">🔍</span>
+            </form>
+        </div>
+
+        {% if items %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px;">
+            {% for item in items %}
+            <div class="product-card" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #f3f4f6; display: flex; flex-direction: column;">
+                
+                <div style="position: relative; aspect-ratio: 1/1; overflow: hidden; background: #f9fafb;">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;">
+                    {% else %}
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #d1d5db; font-size: 40px;">🖼️</div>
+                    {% endif %}
+                    
+                    {% if item.stock <= 5 and item.stock > 0 %}
+                        <span style="position: absolute; top: 10px; right: 10px; background: #fee2e2; color: #dc2626; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px;">Low Stock</span>
+                    {% endif %}
+                </div>
+
+                <div style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1;">
+                    <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">
+                        {{ item.category.name }}
+                    </div>
+                    
+                    <h3 style="font-size: 15px; font-weight: 700; color: #1f2937; margin: 0 0 10px 0; line-height: 1.4; flex-grow: 1;">
+                        <a href="{% url 'product_detail' item.id %}" style="text-decoration: none; color: inherit;">{{ item.name }}</a>
+                    </h3>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                        <div style="font-size: 16px; font-weight: 800; color: var(--primary-pink);">
+                            Rp {{ item.price|floatformat:0 }}
+                        </div>
+                        
+                        <form action="{% url 'add_to_cart' item.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" style="width: 32px; height: 32px; border-radius: 8px; background: #f3f4f6; border: none; color: #374151; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" title="Add to Cart">
+                                🛒
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <div style="text-align: center; padding: 60px; background: white; border-radius: 16px; border: 1px dashed #d1d5db;">
+                <div style="font-size: 40px; margin-bottom: 15px;">🕵️‍♀️</div>
+                <h3 style="color: #374151; font-weight: 700;">No products found</h3>
+                <p style="color: #6b7280; font-size: 14px;">Try adjusting your search or filter to find what you're looking for.</p>
+                <a href="{% url 'product_list' %}" style="display: inline-block; margin-top: 15px; color: var(--primary-pink); font-weight: 600; text-decoration: none;">Clear all filters</a>
+            </div>
+        {% endif %}
+
+    </main>
+</div>
+
+<style>
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+        border-color: #fce7f3 !important;
+    }
+    .product-card:hover img {
+        transform: scale(1.05);
+    }
+    .product-card button:hover {
+        background: var(--primary-pink) !important;
+        color: white !important;
+    }
+    
+    /* Responsive Sidebar */
+    @media (max-width: 768px) {
+        aside {
+            flex: 100% !important;
+            position: static !important;
+        }
+    }
+</style>
+{% endblock %}

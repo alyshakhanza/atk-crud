@@ -36,27 +36,56 @@ class PaymentForm(forms.Form):
             raise forms.ValidationError("Card number must be 16 digits long.")
         return card_number
     
-class CartItemForm(forms.Form):
-    class Meta:
-        model = CartItem
-        fields = ['item', 'quantity']
+# class CartItemForm(forms.ModelForm):
+#     class Meta:
+#         model = CartItem
+#         fields = ['quantity']
+
+#     def clean_quantity(self):
+#         qty = self.cleaned_data.get('quantity')
+#         if qty < 1:
+#             raise forms.ValidationError("Quantity must be at least 1.")
+#         if self.instance.item.stock < qty:
+#             raise forms.ValidationError(f"Only {self.instance.item.stock} items available in stock.")
+#         return qty
+    
+#     def clean_item(self):
+#         item = self.cleaned_data.get("item")
+#         cart = getattr(self.instance, 'cart', None)
+
+#         if cart and CartItem.objects.filter(cart=cart, item=item).exclude(pk=self.instance.pk).exists():
+#             raise forms.ValidationError("This item is already in the cart.")
+#         return item
+
+class AddToCartForm(forms.Form):
+    quantity = forms.IntegerField(min_value=1, initial=1, required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        self.item_obj = kwargs.pop('item_obj', None)
+        super().__init__(*args, **kwargs)
 
     def clean_quantity(self):
-        qty = self.cleaned_data.get('quantity')
-        if qty < 1:
-            raise forms.ValidationError("Quantity must be at least 1.")
-        if self.instance.item.stock < qty:
-            raise forms.ValidationError(f"Only {self.instance.item.stock} items available in stock.")
+        qty = self.cleaned_data.get('quantity', 1)
+        if qty is None: 
+            qty = 1
+        
+        if self.item_obj and qty > self.item_obj.stock:
+            raise forms.ValidationError(f"Stok tidak cukup. Hanya tersisa {self.item_obj.stock}.")
         return qty
-    
-    def clean_item(self):
-        item = self.cleaned_data.get("item")
-        cart = getattr(self.instance, 'cart', None)
 
-        if cart and CartItem.objects.filter(cart=cart, item=item).exclude(pk=self.instance.pk).exists():
-            raise forms.ValidationError("This item is already in the cart.")
-        return item
+    def save(self):
+        qty = self.cleaned_data.get('quantity')
+        cart, _ = Cart.objects.get_or_create(user=self.user)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, item=self.item_obj)
 
+        if not created:
+            cart_item.quantity += qty
+        else:
+            cart_item.quantity = qty
+            
+        cart_item.save()
+        return cart_item
 class OrderFilterForm(forms.Form):
     order_status = forms.ChoiceField(
         choices=[('', 'All Status')] + list(Order.STATUS_CHOICES),

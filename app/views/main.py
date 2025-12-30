@@ -5,7 +5,14 @@ from app.models.user import UserAccount
 from app.models.customer import Customer, CustomerProfile
 
 def homepage(request) : 
-    return render(request ,  "app/public/navbar.html" )
+    context = {}
+    if request.user.is_authenticated and request.user.type == UserAccount.Types.CUSTOMER:
+        profile, created = CustomerProfile.objects.get_or_create(
+            customer=request.user
+        )
+        context["profile"] = profile
+
+    return render(request, "app/public/homepage.html", context)
 
 def logout_view(request):
     logout(request)
@@ -66,9 +73,6 @@ def signup(request):
             messages.error(request, f"Signup failed: {e}")
 
     return render(request, "app/public/signup.html")
-
-# def product_list(request):
-#     return render(request, "app/base/product.html")
 
 def forbidden(request):
     return render(request, "app/public/403.html")

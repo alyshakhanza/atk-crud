@@ -1,0 +1,129 @@
+{% extends 'app/admin/base.html' %}
+
+{% block content %}
+<div style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+        <a href="{% url 'item_list' %}" style="text-decoration: none; color: #6b7280; font-size: 24px;">
+            ⬅️
+        </a>
+        <div>
+            <h2 style="color: #333; font-size: 24px; font-weight: 700; margin: 0;">Edit Product</h2>
+            <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Update information for: <b>{{ item.name }}</b></p>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" style="display: grid; grid-template-columns: 300px 1fr; gap: 30px;">
+        {% csrf_token %}
+        
+        <div style="background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; text-align: center;">
+            <p style="font-weight: 600; color: #374151; margin-bottom: 15px;">Product Image</p>
+            
+            <div style="width: 100%; aspect-ratio: 1/1; background: #f3f4f6; border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 2px dashed #d1d5db; display: flex; align-items: center; justify-content: center; position: relative;">
+                {% if item.image %}
+                    <img id="imagePreview" src="{{ item.image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                {% else %}
+                    <img id="imagePreview" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                    <span id="noImageText" style="color: #9ca3af; font-size: 40px;">🖼️</span>
+                {% endif %}
+            </div>
+
+            <label for="imageInput" style="display: inline-block; width: 100%; background: white; border: 1px solid #d1d5db; color: #374151; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;">
+                Change Image
+            </label>
+            <input type="file" name="image" id="imageInput" style="display: none;" accept="image/*" onchange="previewImage(this)">
+            <p style="font-size: 11px; color: #9ca3af; margin-top: 10px;">Supported formats: JPG, PNG</p>
+        </div>
+
+        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                
+                <div style="grid-column: span 2;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Product Name</label>
+                    <input type="text" name="name" value="{{ item.name }}" required
+                        style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none; transition: border 0.2s;"
+                        onfocus="this.style.borderColor='#4f46e5'" onblur="this.style.borderColor='#d1d5db'">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Category</label>
+                    <select name="category" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}" {% if item.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Brand</label>
+                    <select name="brand" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
+                        <option value="">-- No Brand --</option>
+                        {% for brand in brands %}
+                            <option value="{{ brand.id }}" {% if item.brand.id == brand.id %}selected{% endif %}>{{ brand.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Price (Rp)</label>
+                    <input type="number" name="price" value="{{ item.price|floatformat:0 }}" required
+                        style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none;"
+                        min="1" step="1">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Stock</label>
+                    <input type="number" name="stock" value="{{ item.stock }}" required
+                        style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none;"
+                        min="0" step="1">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Color</label>
+                    <input type="text" name="color" value="{{ item.color|default:'' }}" placeholder="e.g. Red, Blue"
+                        style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Size</label>
+                    <input type="text" name="size" value="{{ item.size|default:'' }}" placeholder="e.g. XL, A4"
+                        style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
+                </div>
+
+                <div style="grid-column: span 2;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px;">Description</label>
+                    <textarea name="description" rows="5"
+                        style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none; font-family: inherit;">{{ item.description|default:'' }}</textarea>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 30px; display: flex; justify-content: flex-end; gap: 15px;">
+                <a href="{% url 'item_list' %}" style="padding: 12px 25px; border-radius: 8px; background: white; border: 1px solid #d1d5db; color: #374151; font-weight: 600; text-decoration: none;">
+                    Cancel
+                </a>
+                <button type="submit" style="padding: 12px 25px; border-radius: 8px; background: #4f46e5; border: none; color: white; font-weight: 600; cursor: pointer; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = document.getElementById('imagePreview');
+                var noImg = document.getElementById('noImageText');
+                
+                img.src = e.target.result;
+                img.style.display = 'block';
+                if(noImg) noImg.style.display = 'none';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock %}

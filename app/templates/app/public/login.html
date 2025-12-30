@@ -1,14 +1,40 @@
-<form method="POST">
-    {% csrf_token %}
-    <label>Email:</label>
-    <input type="email" name="email" required>
+{% extends 'app/public/base.html' %}
+{% block title %}Login{% endblock %}
 
-    <label>Password:</label>
-    <input type="password" name="password" required>
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <h2>Login Page</h2>
+        
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div style="color: red; margin-bottom: 10px;">{{ form.non_field_errors }}</div>
+            {% endif %}
 
-    <button type="submit">Login</button>
-</form>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" class="form-control" placeholder="Enter email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password" >Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+            </div>
 
-{% for message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
+            <input type="hidden" name="next" value="{{ next|default:'homepage' }}">
+
+            <div style="margin-bottom: 10px; text-align: right;">
+                <a href="#" style="font-size: 13px; color: #666;">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+        </form>
+
+        <div style="margin-top: 20px; font-size: 14px;">
+            Don't have an account? <a href="{% url 'signup' %}" style="color: var(--primary-pink); font-weight: bold;">Sign up</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

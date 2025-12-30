@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Corat Coret</title>
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}?v=2">
+    {% block style %}{% endblock %}
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="{% url 'homepage' %}">
+                    <h1>CORAT<br>CORET</h1>
+                </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="{% url 'homepage' %}" class="{% if request.resolver_match.url_name == 'homepage' %}active{% endif %}">Home</a></li>
+                <li><a href="{% url 'product_list' %}">Product</a></li>
+                <li><a href="{% url 'customer_orders' %}">Orders</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="{% url 'cart' %}" class="cart-icon">🛒</a>
+
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="btn btn-outline">Hi, {{ profile.name }}</a>
+                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline">Log In</a>
+                    <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; padding: 20px; color: #777;">
+            &copy; 2025 Corat Coret. All rights reserved.
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

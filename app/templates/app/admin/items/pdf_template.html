@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page {
+            size: A4 landscape; /* Agar muat banyak kolom */
+            margin: 1cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 5px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+            font-weight: bold;
+        }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Laporan Stok Produk - Corat Coret</h1>
+    <p>Tanggal Cetak: {% now "d F Y H:i" %}</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th width="5%">ID</th>
+                <th width="20%">Nama Produk</th>
+                <th width="10%">Kategori</th>
+                <th width="10%">Brand</th>
+                <th width="10%">Harga</th>
+                <th width="5%">Stok</th>
+                <th width="10%">Warna</th>
+                <th width="10%">Ukuran</th>
+                <th width="20%">Deskripsi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td class="text-center">{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.category.name }}</td>
+                <td>{{ item.brand.name|default:"-" }}</td>
+                <td class="text-right">Rp {{ item.price|floatformat:0 }}</td>
+                <td class="text-center">{{ item.stock }}</td>
+                <td>{{ item.color|default:"-" }}</td>
+                <td>{{ item.size|default:"-" }}</td>
+                <td>{{ item.description|striptags|truncatechars:50 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
