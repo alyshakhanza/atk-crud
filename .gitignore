@@ -1,0 +1,27 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ---- Django ----
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+
+db.sqlite3
+
+/static/
+/media/items/*
+/media/products/*
+!/media/items/
+/!media/products/
+
+
+# Virtual env
+venv/
+env/
+ENV/
+.venv/
+

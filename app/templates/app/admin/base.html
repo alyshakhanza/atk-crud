@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - {% block title %}Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'app/css/admin.css' %}?v=1">
+    {% block style %}{% endblock %}
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <a href="{% url 'dashboard' %}" class="sidebar-logo-text">
+                CORAT<br>CORET
+            </a>
+        </div>
+
+        <nav>
+            <div class="sidebar-nav">
+                <div class="sidebar-title">Main Menu</div>
+                
+                <a href="{% url 'dashboard' %}" class="sidebar-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <span>📊</span> Dashboard
+                </a>
+                
+                <a href="{% url 'orders' %}" class="sidebar-link">
+                    <span>📦</span> Orders
+                </a>
+
+                <div class="sidebar-title" style="margin-top: 15px;">Management</div>
+                
+                <a href="{% url 'brand_list' %}" class="sidebar-link {% if 'brand' in request.path %}active{% endif %}">
+                    <span>🏷️</span> Brands
+                </a>
+
+                <a href="{% url 'category_list' %}" class="sidebar-link {% if 'category' in request.path %}active{% endif %}">
+                    <span>📂</span> Categories
+                </a>
+
+                <a href="{% url 'item_list' %}" class="sidebar-link {% if 'items' in request.path %}active{% endif %}">
+                    <span>🛍️</span> Products
+                </a>
+
+                <a href="#" class="sidebar-link">
+                    <span>👥</span> Customers
+                </a>
+            </div>
+        </nav>
+
+        <div style="margin-top: auto;">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="sidebar-link" style="width:100%; border:none; background:transparent;">
+                    <span>🚪</span> Logout
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="main">
+        <div class="top-bar">
+            <div style="flex: 1; position: relative;">
+                <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #9ca3af;">🔍</span>
+                <input type="text" placeholder="Search orders or products" style="width: 100%; padding: 10px 40px; border-radius: 999px; border: none; background-color: #f3f4f6; outline: none;">
+            </div>
+
+            <div class="admin-user-bar">
+                <div class="admin-notification" title="Notifications">
+                    🔔
+                </div>
+
+                <div class="admin-user-pill">
+                    <div class="admin-avatar">
+                        {{ request.user.email|slice:":2"|upper }}
+                    </div>
+
+                    <div class="admin-user-info">
+                        <span class="admin-user-name">{{ request.user.email|cut:"@coratcoret.com" }}</span>
+                        <span class="admin-user-email">{{ request.user.email }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

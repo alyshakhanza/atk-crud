@@ -1,0 +1,169 @@
+{% extends 'app/admin/base.html' %}
+
+{% block content %}
+<div style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+        <a href="{% url 'item_list' %}" style="text-decoration: none; color: #6b7280; font-size: 24px;">
+            ⬅️
+        </a>
+        <div>
+            <h2 style="color: #333; font-size: 24px; font-weight: 700; margin: 0;">Create New Product</h2>
+            <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Add a new item to your catalog</p>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="custom-form" style="display: grid; grid-template-columns: 300px 1fr; gap: 30px;">
+        {% csrf_token %}
+        
+        <div style="background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; text-align: center;">
+            <p style="font-weight: 600; color: #374151; margin-bottom: 15px;">Product Image</p>
+            
+            <div style="width: 100%; aspect-ratio: 1/1; background: #f3f4f6; border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 2px dashed #d1d5db; display: flex; align-items: center; justify-content: center; position: relative;">
+                <img id="imagePreview" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                <span id="noImageText" style="color: #9ca3af; font-size: 40px;">📸</span>
+            </div>
+
+            <div style="position: relative;">
+                <label for="id_image" style="display: inline-block; width: 100%; background: white; border: 1px solid #d1d5db; color: #374151; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;">
+                    Upload Image
+                </label>
+                <div style="height: 0; overflow: hidden; opacity: 0;">
+                    {{ form.image }}
+                </div>
+            </div>
+            <p style="font-size: 11px; color: #9ca3af; margin-top: 10px;">Supported formats: JPG, PNG</p>
+        </div>
+
+        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            
+            {% if form.non_field_errors %}
+                <div style="background: #fee2e2; color: #dc2626; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 13px;">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                
+                <div style="grid-column: span 2;">
+                    <label>Product Name</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}<div class="error-msg">{{ form.name.errors }}</div>{% endif %}
+                </div>
+
+                <div>
+                    <label>Category</label>
+                    {{ form.category }}
+                    {% if form.category.errors %}<div class="error-msg">{{ form.category.errors }}</div>{% endif %}
+                </div>
+
+                <div>
+                    <label>Brand</label>
+                    {{ form.brand }}
+                    {% if form.brand.errors %}<div class="error-msg">{{ form.brand.errors }}</div>{% endif %}
+                </div>
+
+                <div>
+                    <label>Price (Rp)</label>
+                    {{ form.price }}
+                    {% if form.price.errors %}<div class="error-msg">{{ form.price.errors }}</div>{% endif %}
+                </div>
+
+                <div>
+                    <label>Stock</label>
+                    {{ form.stock }}
+                    {% if form.stock.errors %}<div class="error-msg">{{ form.stock.errors }}</div>{% endif %}
+                </div>
+
+                <div>
+                    <label>Color</label>
+                    {{ form.color }}
+                </div>
+
+                <div>
+                    <label>Size</label>
+                    {{ form.size }}
+                </div>
+
+                <div style="grid-column: span 2;">
+                    <label>Description</label>
+                    {{ form.description }}
+                </div>
+
+            </div>
+
+            <div style="margin-top: 30px; display: flex; justify-content: flex-end; gap: 15px;">
+                <a href="{% url 'item_list' %}" style="padding: 12px 25px; border-radius: 8px; background: white; border: 1px solid #d1d5db; color: #374151; font-weight: 600; text-decoration: none;">
+                    Cancel
+                </a>
+                <button type="submit" style="padding: 12px 25px; border-radius: 8px; background: #4f46e5; border: none; color: white; font-weight: 600; cursor: pointer; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);">
+                    Create Product
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Styling Label */
+    .custom-form label {
+        display: block; 
+        font-size: 13px; 
+        font-weight: 600; 
+        color: #374151; 
+        margin-bottom: 8px;
+    }
+
+    /* Styling Input Fields (Text, Number, Email, Select, Textarea) 
+       Agar sesuai dengan desain Edit Page tanpa mengubah Python Code */
+    .custom-form input[type="text"],
+    .custom-form input[type="number"],
+    .custom-form select,
+    .custom-form textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        outline: none;
+        transition: border 0.2s;
+        box-sizing: border-box; /* Penting agar padding tidak melebarkan elemen */
+        font-family: inherit;
+    }
+
+    /* Efek Focus */
+    .custom-form input:focus,
+    .custom-form select:focus,
+    .custom-form textarea:focus {
+        border-color: #4f46e5;
+    }
+
+    /* Styling Pesan Error */
+    .error-msg {
+        color: #dc2626;
+        font-size: 11px;
+        margin-top: 5px;
+    }
+</style>
+
+<script>
+    // Deteksi perubahan pada input file (biasanya ID yang digenerate Django adalah id_image)
+    const imgInput = document.getElementById('id_image');
+    
+    if (imgInput) {
+        imgInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var img = document.getElementById('imagePreview');
+                    var noImg = document.getElementById('noImageText');
+                    
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    if(noImg) noImg.style.display = 'none';
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+</script>
+{% endblock %}

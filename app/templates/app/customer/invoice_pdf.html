@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 11pt;
+            color: #000;
+            line-height: 1.4;
+        }
+        .header {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .brand-name {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            color: #000; /* Atau warna branding Anda */
+        }
+        .company-info {
+            font-size: 10pt;
+            margin-bottom: 15px;
+        }
+        .invoice-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+        
+        /* Layout dua kolom untuk Info Invoice & Pembeli */
+        .info-section {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .info-table {
+            width: 100%;
+            border: none;
+        }
+        .info-table td {
+            vertical-align: top;
+            padding: 2px 0;
+            border: none;
+        }
+        .label {
+            font-weight: bold;
+            width: 130px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 2px;
+            width: 100%;
+        }
+
+        /* Tabel Produk */
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .product-table th {
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+            padding: 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 10pt;
+        }
+        .product-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            font-size: 10pt;
+            vertical-align: middle;
+        }
+        .col-center { text-align: center; }
+        .col-right { text-align: right; }
+        
+        /* Totals & Notes */
+        .footer-section {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .notes-box {
+            width: 55%;
+            float: left;
+            font-size: 9pt;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #fafafa;
+        }
+        .totals-box {
+            width: 40%;
+            float: right;
+        }
+        .totals-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .totals-table td {
+            padding: 5px;
+            border: none;
+        }
+        .total-row {
+            font-weight: bold;
+            border-top: 1px solid #000;
+        }
+        
+        .footer-msg {
+            clear: both;
+            margin-top: 40px;
+            text-align: center;
+            font-style: italic;
+            font-size: 9pt;
+        }
+
+        /* CSS untuk Watermark */
+        #watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Pastikan berada di belakang teks */
+            text-align: center; /* Posisi Tengah Kiri-Kanan (Horizontal) */
+        }
+
+        .watermark-container {
+            /* Trik untuk posisi Tengah Atas-Bawah (Vertikal) */
+            /* Sesuaikan padding-top ini tergantung ukuran kertas agar pas di tengah */
+            padding-top: 35%; 
+        }
+
+        #watermark img {
+            width: 400px; /* Atur ukuran logo watermark */
+            opacity: 1; /* Transparansi (0.1 - 0.2) agar tulisan invoice tetap terbaca */
+            
+            /* Jika ingin memastikan 0 derajat (defaultnya sudah 0) */
+            transform: rotate(0deg); 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="watermark">
+        <div class="watermark-container">
+            <img src="file:///E:/atk-crud/media/logo.png" alt="watermark">
+
+            </div>
+    </div>
+
+    <div class="invoice-box">
+    <div class="header">
+        <div class="brand-name">CORAT CORET</div>
+        <div class="company-info">
+            Jl. Ahmad Yani No. 17, Surabaya<br>
+            Telp: 085678901877<br>
+            Email: corat_coret@gmail.com
+        </div>
+        <div class="invoice-title">INVOICE</div>
+    </div>
+
+    <table class="info-table">
+        <tr>
+            <td width="55%">
+                <table>
+                    <tr>
+                        <td class="label">Inv No</td>
+                        <td>: #{{ order.id|stringformat:"08d" }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl Pembelian</td>
+                        <td>: {{ order.created_at|date:"d F Y" }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Status</td>
+                        <td>: {{ order.get_status_display|default:"Lunas" }}</td>
+                    </tr>
+                </table>
+                
+                <div class="section-title" style="width: 90%; margin-top: 15px;">DATA PEMBELI</div>
+                <table>
+                    <tr>
+                        <td class="label">Nama</td>
+                        <td>: {% if order.user.profile %}
+                            {{ order.user.profile.name }}
+                        {% else %}
+                            {{ order.user.get_full_name|default:order.user.username }}
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Email</td>
+                        <td>: {{ order.user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">No. HP</td>
+                        <td>: {{ order.user.profile.phone|default:"-" }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Alamat</td>
+                        <td>: {{ order.user.profile.address|default:"-" }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th width="5%">No</th>
+                <th width="30%">Produk</th>
+                <th width="15%">Kategori</th>
+                <th width="10%">Merk</th>
+                <th width="10%">Jumlah</th>
+                <th width="15%">Harga</th>
+                <th width="15%">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td class="col-center">{{ forloop.counter }}</td>
+                <td>{{ item.item.name }}</td>
+                <td class="col-center">{{ item.item.category.name|default:"-" }}</td>
+                <td class="col-center">{{ item.item.brand.name|default:"-" }}</td>
+                <td class="col-center">{{ item.quantity }}</td>
+                <td class="col-right">Rp {{ item.price|floatformat:0 }}</td>
+                <td class="col-right">Rp {% widthratio item.price 1 item.quantity %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer-section">
+        <div class="notes-box">
+            <strong>CATATAN:</strong><br><br>
+            Terima kasih telah berbelanja di Toko CORAT CORET.<br>
+            Barang yang sudah dibeli tidak dapat dikembalikan kecuali terdapat cacat produksi yang disertakan dengan video unboxing.<br>
+            <br>
+            <em>Metode Pembayaran: {{ order.payment.get_method_display|default:"Transfer Bank" }}</em><br>
+            <em>Status Pembayaran: {{ order.payment.success|yesno:"Lunas,Pending" }}</em>
+        </div>
+
+        <div class="totals-box">
+            <table class="totals-table">
+                <tr>
+                    <td>Subtotal Harga Barang</td>
+                    <td class="col-right">Rp {{ order.total_price|floatformat:0 }}</td>
+                </tr>
+                <tr>
+                    <td>Diskon</td>
+                    <td class="col-right">-</td>
+                </tr>
+                <tr>
+                    <td>Total Ongkos Kirim</td>
+                    <td class="col-right">Rp 0</td> </tr>
+                <tr class="total-row">
+                    <td style="padding-top: 10px;">TOTAL PEMBAYARAN</td>
+                    <td class="col-right" style="padding-top: 10px;">Rp {{ order.total_price|floatformat:0 }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    <div class="footer-msg">
+        -- Terima Kasih --
+    </div>
+
+</body>
+</html>

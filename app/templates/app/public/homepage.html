@@ -1,0 +1,64 @@
+{% extends 'app/public/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+        <!-- Banner Section -->
+        <div class="banner">
+            <div class="banner-content">
+                <h1>CORAT CORET Dunia Kreasi</h1>
+                <p>Tempat Belanja Produk No. 1 Kreatifmu</p>
+                <div class="discount-badge">
+                    <span>EKSTRA DISKON</span>
+                    <span class="discount-text">15%</span>
+                </div>
+            </div>
+            <div class="product-preview">
+                <div class="product-preview-item">📚</div>
+                <div class="product-preview-item">✏️</div>
+                <div class="product-preview-item">📓</div>
+            </div>
+        </div>
+
+        <!-- Category Section -->
+        <div class="category-section">
+            <h2>Kategori Produk</h2>
+            <div class="category-grid">
+                <div class="category-item" onclick="navigateToCategory('aksesori-seragam')">
+                    <div class="category-icon">🎒</div>
+                    <div class="category-name">Aksesorie Seragam</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('alat-gambar')">
+                    <div class="category-icon">🎨</div>
+                    <div class="category-name">Alat Gambar</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('alat-tulis')">
+                    <div class="category-icon">✏️</div>
+                    <div class="category-name">Alat Tulis</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('bahan-perekat')">
+                    <div class="category-icon">🧴</div>
+                    <div class="category-name">Bahan Perekat</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('dokumen')">
+                    <div class="category-icon">📄</div>
+                    <div class="category-name">Dokumen</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('mainan')">
+                    <div class="category-icon">🧸</div>
+                    <div class="category-name">Mainan</div>
+                </div>
+                
+                <div class="category-item" onclick="navigateToCategory('tali')">
+                    <div class="category-icon">🧵</div>
+                    <div class="category-name">Tali</div>
+                </div>
+            </div>
+        </div>
+    
+{% endblock %}

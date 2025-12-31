@@ -1,0 +1,136 @@
+{% extends 'app/admin/base.html' %}
+
+{% block content %}
+<div style="padding: 20px;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2 style="color: #333; font-size: 24px; font-weight: 700;">Order Management</h2>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 30px;">
+        
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-left: 4px solid #f59e0b;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <p style="color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Pending</p>
+                    <h3 style="font-size: 24px; font-weight: 800; color: #1f2937; margin-top: 5px;">{{ pending_orders }}</h3>
+                </div>
+                <div style="background: #fef3c7; color: #f59e0b; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    ⏳
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-left: 4px solid #3b82f6;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <p style="color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Delivery</p>
+                    <h3 style="font-size: 24px; font-weight: 800; color: #1f2937; margin-top: 5px;">{{ delivery_orders }}</h3>
+                </div>
+                <div style="background: #dbeafe; color: #3b82f6; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    🚚
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-left: 4px solid #6366f1;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <p style="color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Total Orders</p>
+                    <h3 style="font-size: 24px; font-weight: 800; color: #1f2937; margin-top: 5px;">{{ total_orders }}</h3>
+                </div>
+                <div style="background: #e0e7ff; color: #6366f1; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    📦
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-left: 4px solid #ef4444;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <p style="color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Cancelled</p>
+                    <h3 style="font-size: 24px; font-weight: 800; color: #1f2937; margin-top: 5px;">{{ cancelled_orders }}</h3>
+                </div>
+                <div style="background: #fee2e2; color: #ef4444; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    🚫
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden;">
+        <div style="padding: 20px; border-bottom: 1px solid #f3f4f6;">
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #374151;">Recent Transactions</h3>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+                        <th style="padding: 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Order ID</th>
+                        <th style="padding: 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Customer Name</th>
+                        <th style="padding: 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Total Item</th>
+                        <th style="padding: 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Status</th>
+                        <th style="padding: 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Total Price</th>
+                        <th style="padding: 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr style="border-bottom: 1px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='transparent'">
+                        
+                        <td style="padding: 16px; font-weight: 600; color: #374151;">
+                            #{{ order.id }}
+                        </td>
+                        
+                        <td style="padding: 16px; color: #4b5563;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 30px; height: 30px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #6b7280;">
+                                    {{ order.user.profile.name|slice:":1"|upper }}
+                                </div>
+                                {{ order.user.profile.name }}
+                            </div>
+                        </td>
+
+                        <td style="padding: 16px; color: #6b7280;">
+                            {{ order.items.count }} Item(s)
+                        </td>
+
+                        <td style="padding: 16px;">
+                            {% if order.status == 'pending' %}
+                                <span style="background: #fffbeb; color: #d97706; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid #fcd34d;">Unpaid</span>
+                            {% elif order.status == 'packed' %}
+                                <span style="background: #eff6ff; color: #2563eb; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid #bfdbfe;">Packed</span>
+                            {% elif order.status == 'completed' %}
+                                <span style="background: #ecfdf5; color: #059669; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid #a7f3d0;">Completed</span>
+                            {% elif order.status == 'cancelled' %}
+                                <span style="background: #fef2f2; color: #dc2626; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid #fecaca;">Cancelled</span>
+                            {% else %}
+                                <span style="background: #f3f4f6; color: #4b5563; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;">{{ order.get_status_display }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td style="padding: 16px; font-weight: 600; color: #111827;">
+                            Rp {{ order.total_price|floatformat:0 }}
+                        </td>
+
+                        <td style="padding: 16px; text-align: right;">
+                            <a href="{% url 'order_edit' order.id %}" style="text-decoration: none; background: white; border: 1px solid #d1d5db; color: #374151; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; transition: 0.2s; display: inline-block;">
+                                Manage
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" style="padding: 40px; text-align: center; color: #9ca3af;">
+                            No orders found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

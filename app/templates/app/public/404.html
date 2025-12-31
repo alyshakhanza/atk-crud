@@ -1,0 +1,45 @@
+{% extends 'app/public/base.html' %}
+{% load static %}
+
+{% block title %}Halaman Tidak Ditemukan (404){% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; padding: 80px 20px; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    
+    <div style="font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite;">
+        🧐
+    </div>
+
+    <h1 style="font-size: 6rem; line-height: 1; color: var(--primary-pink); margin-bottom: 10px; font-weight: 800;">
+        404
+    </h1>
+
+    <h2 style="font-size: 1.5rem; color: var(--text-dark); margin-bottom: 15px;">
+        Oops! Halaman Tidak Ditemukan
+    </h2>
+    
+    <p style="color: #666; margin-bottom: 30px; max-width: 500px; line-height: 1.6;">
+        Sepertinya halaman yang kamu cari sudah dipindahkan, dihapus, atau mungkin kamu salah ketik alamatnya. Jangan khawatir, mari kembali berkreasi!
+    </p>
+
+    <div style="display: flex; gap: 15px; justify-content: center;">
+        <a href="{% url 'homepage' %}" class="btn btn-primary">
+            Kembali ke Home
+        </a>
+        <a href="javascript:history.back()" class="btn btn-outline">
+            Kembali Sebelumnya
+        </a>
+    </div>
+
+</div>
+
+<style>
+    /* Menggunakan animasi float yang sudah dibuat di style.css sebelumnya (jika ada), 
+       atau mendefinisikannya ulang untuk jaga-jaga */
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+</style>
+{% endblock %}

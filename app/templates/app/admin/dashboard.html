@@ -1,0 +1,275 @@
+{% extends 'app/admin/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div style="padding: 15px;">
+    <div style="margin-bottom: 15px;">
+        <h2 style="font-size: 24px; font-weight: 700; color: #1f2937; margin-bottom: 5px;">Dashboard</h2>
+        <p style="color: #6b7280; font-size: 14px;">Welcome back, {{ request.user.email|cut:"@coratcoret.com" }}! Here's what's happening today.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 20px;">
+        
+        <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #f3f4f6;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                <div>
+                    <p style="color: #6b7280; font-size: 14px; font-weight: 500;">Total Orders</p>
+                    <h3 style="color: #111827; font-size: 28px; font-weight: 700; margin-top: 4px;">{{ total_orders }}</h3>
+                </div>
+                <div style="width: 40px; height: 40px; background-color: #ec4899; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    🛍️
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background-color: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 600;">+12.5%</span>
+                <span style="color: #9ca3af; font-size: 12px;">from last month</span>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #f3f4f6;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                <div>
+                    <p style="color: #6b7280; font-size: 14px; font-weight: 500;">Total Revenue</p>
+                    <h3 style="color: #111827; font-size: 28px; font-weight: 700; margin-top: 4px;">Rp {{ total_revenue|floatformat:0 }}</h3>
+                </div>
+                <div style="width: 40px; height: 40px; background-color: #8b5cf6; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    💸
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background-color: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 600;">+8.2%</span>
+                <span style="color: #9ca3af; font-size: 12px;">from last month</span>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #f3f4f6;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                <div>
+                    <p style="color: #6b7280; font-size: 14px; font-weight: 500;">Product</p>
+                    <h3 style="color: #111827; font-size: 28px; font-weight: 700; margin-top: 4px;">{{ total_products }}</h3>
+                </div>
+                <div style="width: 40px; height: 40px; background-color: #f59e0b; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    📚
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background-color: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 600;">-2.4%</span>
+                <span style="color: #9ca3af; font-size: 12px;">from last month</span>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #f3f4f6;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                <div>
+                    <p style="color: #6b7280; font-size: 14px; font-weight: 500;">Best Seller</p>
+                    <h3 style="color: #111827; font-size: 28px; font-weight: 700; margin-top: 4px;">{{ top_product_name }}</h3>
+                </div>
+                <div style="width: 40px; height: 40px; background-color: #3b82f6; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    🏆
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="color: #6b7280; font-size: 12px; font-weight: 500;">{{ top_product_sold }} unit sold</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-top: 24px;">
+    
+    <div style="flex: 65; min-width: 300px; background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #f3f4f6; overflow: hidden; display: flex; flex-direction: column;">
+        
+        <div style="padding: 24px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 18px; font-weight: 700; color: #1f2937; margin: 0;">Recent Orders</h3>
+            <a href="{% url 'orders' %}" style="color: #ec4899; font-size: 14px; font-weight: 600; text-decoration: none;">View All</a>
+        </div>
+        
+        <div style="overflow-x: auto; flex-grow: 1;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead style="background-color: #f9fafb;">
+                    <tr>
+                        <th style="text-align: left; padding: 16px 20px; font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase;">ID & Customer</th>
+                        <th style="text-align: left; padding: 16px 20px; font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase;">Status</th>
+                        <th style="text-align: right; padding: 16px 20px; font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in recent_orders %}
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                        
+                        <td style="padding: 16px 20px;">
+                            <div style="font-weight: 600; color: #111827; font-size: 13px;">#{{ order.id }}</div>
+                            <div style="font-size: 12px; color: #6b7280; margin-top: 2px;">{{ order.user.username }}</div>
+                        </td>
+                        
+                        <td style="padding: 16px 20px;">
+                            {% if order.status == 'completed' %}
+                                <span style="background-color: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">Completed</span>
+                            {% elif order.status == 'pending' %}
+                                <span style="background-color: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">Pending</span>
+                            {% elif order.status == 'packed' %}
+                                <span style="background-color: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">Packed</span>
+                            {% elif order.status == 'cancelled' %}
+                                <span style="background-color: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">Cancelled</span>
+                            {% else %}
+                                <span style="background-color: #f3f4f6; color: #4b5563; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">{{ order.get_status_display }}</span>
+                            {% endif %}
+                            <div style="font-size: 10px; color: #9ca3af; margin-top: 4px;">{{ order.created_at|date:"d M" }}</div>
+                        </td>
+                        
+                        <td style="padding: 16px 20px; text-align: right; font-weight: 600; color: #1f2937; font-size: 13px;">
+                            Rp {{ order.total_price|floatformat:0 }}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" style="padding: 24px; text-align: center; color: #9ca3af; font-size: 13px;">No recent orders.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="flex: 35; min-width: 250px; display: flex; flex-direction: column; gap: 16px;">
+        
+        <div class="custom-card">
+            <div class="card-title">Daily Sales Volume</div>
+            
+            <div class="chart-container">
+                <div class="chart-bars">
+                    {% for day in weekly_sales %}
+                    <div class="bar-wrapper">
+                        <div class="chart-bar {% if day.is_today %}chart-bar--active{% endif %}" 
+                            style="height: {% widthratio day.count max_daily_orders 100 %}%;"
+                            title="{{ day.count }} Orders"></div>
+                        <span class="bar-label">{{ day.day_label }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="custom-card">
+            <div class="card-title">Top-selling category</div>
+            
+            <div class="gauge-wrapper">
+                <div class="gauge" style="background: conic-gradient(#4f46e5 {{ top_cat_percentage }}%, #e5e7eb 0%);">
+                    <div class="gauge-inner">
+                        <span style="font-size: 20px;">🔥</span>
+                    </div>
+                </div>
+                
+                <div class="gauge-text">{{ top_cat_name }}</div>
+                <div class="gauge-sub">
+                    <span style="color: #4f46e5; font-weight: 700;">{{ top_cat_percentage }}%</span> of total items sold
+                    <br>({{ top_cat_qty }} items)
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<style>
+    .custom-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f3f4f6;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .card-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 20px;
+    }
+
+    /* --- Styles untuk Chart --- */
+    .chart-container {
+        flex-grow: 1;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 10px;
+    }
+    .chart-bars {
+        display: flex;
+        gap: 12px;
+        align-items: flex-end;
+        height: 120px; /* Tinggi maksimal grafik */
+        width: 100%;
+        justify-content: space-between;
+    }
+    .bar-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        height: 100%;
+        justify-content: flex-end;
+    }
+    .chart-bar {
+        width: 100%;
+        background-color: #f3f4f6;
+        border-radius: 6px;
+        transition: height 0.5s ease;
+        min-height: 4px; /* Agar bar 0 tetap terlihat sedikit garisnya */
+    }
+    .chart-bar--active {
+        background-color: #ec4899; /* Warna Pink untuk hari ini */
+    }
+    .bar-label {
+        font-size: 11px;
+        color: #9ca3af;
+        font-weight: 600;
+    }
+
+    /* --- Styles untuk Gauge --- */
+    .gauge-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+    }
+    .gauge {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    .gauge-inner {
+        width: 80px;
+        height: 80px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .gauge-text {
+        font-size: 16px;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 4px;
+    }
+    .gauge-sub {
+        font-size: 12px;
+        color: #6b7280;
+        text-align: center;
+        line-height: 1.4;
+    }
+</style>
+{% endblock %}
