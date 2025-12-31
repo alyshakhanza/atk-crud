@@ -33,11 +33,7 @@ def profile(request):
         "profile": profile
     })
 
-# def payment(request):
-#     return render(request, "app/customer/payment.html")
-
 def payment_success(request, order_id):
-    # Ambil order spesifik milik user yang sedang login
     order = get_object_or_404(Order, id=order_id, user=request.user)
     
     context = {
